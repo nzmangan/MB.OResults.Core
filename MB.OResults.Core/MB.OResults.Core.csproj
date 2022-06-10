@@ -2,11 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <Authors>nzmangan</Authors>
+    <RepositoryUrl>https://github.com/nzmangan/MB.OResults.Core</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>128.png</PackageIcon>
+    <PackageIconUrl />
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="IOF.XML.V3" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
   </ItemGroup>
-
 </Project>
