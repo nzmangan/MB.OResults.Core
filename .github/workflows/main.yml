@@ -20,4 +20,4 @@ jobs:
       run: dotnet pack MB.OResults.Core\\MB.OResults.Core.csproj -c Release
 
     - name: Publish to GitHub packages 
-      run: dotnet nuget push /home/runner/work/MB.OResults.Core/MB.OResults.Core/MB.OResults.Core/bin/Release/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate`
+      run: dotnet nuget push *.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
