@@ -8,16 +8,16 @@ jobs:
     name: build, pack & publish
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+    - name: Check out Repo
+      uses: actions/checkout@v2
 
-      # - name: Setup dotnet
-      #   uses: actions/setup-dotnet@v1
-      #   with:
-      #     dotnet-version: 3.1.200
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
 
-      - name: publish on version change
-        id: publish_nuget
-        uses: brandedoutcast/publish-nuget@v2
-        with:
-          PROJECT_FILE_PATH: MB.OResults.Core/MB.OResults.Core.csproj
-          NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+    - name: Pack
+      run: dotnet pack MB.OResults.Core\\MB.OResults.Core.csproj -c Release
+
+    - name: Publish to GitHub packages 
+      run: dotnet nuget push /home/runner/work/MB.OResults.Core/MB.OResults.Core/MB.OResults.Core/bin/Release/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate`
