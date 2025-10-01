@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MB.OResults.Core;
+﻿namespace MB.OResults.Core;
 
 public class GradeEntry {
   public string Id { get; set; }

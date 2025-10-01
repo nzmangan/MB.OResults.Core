@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MB.OResults.Core;
+﻿namespace MB.OResults.Core;
 
 public class Split {
   public string Code { get; set; }
@@ -18,5 +15,6 @@ public class Split {
   public double? PredictedLegTime { get; set; }
   public double? TimeLoss { get; set; }
   public DateTime? ActualTime { get; set; }
-  public List<RunnerDetails> Pack { get; set; } = new();
+  public List<RunnerDetails> Pack { get; set; } = [];
+  public double? KmRate { get; set; }
 }

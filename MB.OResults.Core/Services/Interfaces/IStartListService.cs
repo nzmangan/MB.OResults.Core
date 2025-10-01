@@ -1,8 +1,5 @@
-﻿using System.Threading.Tasks;
-using IOF.XML.V3;
+﻿namespace MB.OResults.Core;
 
-namespace MB.OResults.Core {
-  public interface IStartListService {
-    Task<StartList> Get();
-  }
+public interface IStartListService {
+  Task<StartList> Get();
 }

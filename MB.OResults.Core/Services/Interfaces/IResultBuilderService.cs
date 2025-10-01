@@ -1,7 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿namespace MB.OResults.Core;
 
-namespace MB.OResults.Core {
-  public interface IResultBuilderService {
-    Task<RebuildResponse> Build();
-  }
+public interface IResultBuilderService {
+  Task<RebuildResponse> Build();
 }

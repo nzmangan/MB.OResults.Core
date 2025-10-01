@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MB.OResults.Core;
+﻿namespace MB.OResults.Core;
 
 public class Runner {
   public string Name { get; set; }

@@ -1,8 +1,5 @@
-﻿using System.Threading.Tasks;
-using IOF.XML.V3;
+﻿namespace MB.OResults.Core;
 
-namespace MB.OResults.Core {
-  public interface IEntryListService {
-    Task<EntryList> Get();
-  }
+public interface IEntryListService {
+  Task<EntryList> Get();
 }

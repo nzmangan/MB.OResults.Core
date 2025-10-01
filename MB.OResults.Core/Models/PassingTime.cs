@@ -1,9 +1,7 @@
-﻿using System;
+﻿namespace MB.OResults.Core;
 
-namespace MB.OResults.Core {
-  public class PassingTime {
-    public DateTime? Time { get; set; }
-    public string Name { get; set; }
-    public string Club { get; set; }
-  }
+public class PassingTime {
+  public DateTime? Time { get; set; }
+  public string Name { get; set; }
+  public string Club { get; set; }
 }
