@@ -1,8 +1,8 @@
 name: publish to nuget
 on:
   push:
-    branches:
-      - master
+    tags:
+      - '*.*.*'
 jobs:
   publish:
     name: build, pack & publish
@@ -15,12 +15,18 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 8.0.x
+ 
+    - name: Extract version from tag
+      run: echo "PACKAGE_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+    - name: Restore dependencies
+      run: dotnet restore
 
     - name: Build
-      run: dotnet build MB.OResults.Core\\MB.OResults.Core.csproj -c Release
+      run: dotnet build --configuration Release --no-restore
+  
+    - name: Pack NuGet package
+      run: dotnet pack ./MB.OResults.Core/MB.OResults.Core.csproj -c Release --no-build -p:Version="$PACKAGE_VERSION" -o "./artifacts"
 
-    - name: Pack
-      run: dotnet pack MB.OResults.Core\\MB.OResults.Core.csproj -c Release
-
-    - name: Publish to GitHub packages 
-      run: dotnet nuget push /home/runner/work/MB.OResults.Core/MB.OResults.Core/MB.OResults.Core/bin/Release/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
+    - name: Push to NuGet.org
+      run: dotnet nuget push "./artifacts/*.nupkg" -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
