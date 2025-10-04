@@ -29,7 +29,7 @@ public class ResultBuilderService(ILogger<ResultBuilderService> _Logger, IResult
         grade = new GradeResult { Legs = [], Course = start.Course, Id = start.Id, Name = start.Name, Runners = [] };
         gradeResults.Grades.Add(grade);
       }
-      var noResults = start.Runners.Where(p => !currentRunners.Contains(p.Id)).OrderBy(p => p.StartTime.HasValue ? p.StartTime.Value.ToString() : p.Name);
+      var noResults = start.Runners.Where(p => !currentRunners.Contains(p.Id)).OrderBy(p => p.StartTime.HasValue ? p.StartTime.Value.ToString() : $"{p.FirstName} {p.LastName}".Trim());
       grade.Runners.AddRange(noResults);
 
     }
@@ -44,7 +44,7 @@ public class ResultBuilderService(ILogger<ResultBuilderService> _Logger, IResult
         grade = new GradeResult { Legs = [], Course = entry.Course, Id = entry.Id, Name = entry.Name, Runners = [] };
         gradeResults.Grades.Add(grade);
       }
-      var noResults = entry.Runners.Where(p => !currentRunners.Contains(p.Id)).OrderBy(p => p.Name);
+      var noResults = entry.Runners.Where(p => !currentRunners.Contains(p.Id)).OrderBy(p => $"{p.FirstName} {p.LastName}".Trim());
       grade.Runners.AddRange(noResults);
     }
 

@@ -1,9 +1,10 @@
 ﻿namespace MB.OResults.Core;
 
 public class Runner {
-  public string Name { get; set; }
+  public string FirstName { get; set; }
+  public string LastName { get; set; }
   public string Club { get; set; }
-  public string Position { get; set; }
+  public int? Position { get; set; }
   public double? TimeInSeconds { get; set; }
   public string Status { get; set; }
   public List<Split> Splits { get; set; }

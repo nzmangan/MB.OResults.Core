@@ -13,6 +13,14 @@ public static class PersonHelper {
     return GetPersonId(p.Person, grade, p.Organisation);
   }
 
+  public static string GetName(this Runner person) {
+    return $"{person?.FirstName} {person?.LastName}".Trim();
+  }
+
+  public static string GetName(this RunnerDetails person) {
+    return $"{person?.FirstName} {person?.LastName}".Trim();
+  }
+
   public static string GetPersonId(this Person person, string grade, Organisation organisation) {
     return CalculateMD5Hash($"{grade} {person?.Name?.Family} {person?.Name?.Given} {organisation?.Name}");
   }
@@ -59,5 +67,9 @@ public static class PersonHelper {
     }
 
     return string.Concat(status.Select(x => Char.IsUpper(x) ? " " + x : x.ToString())).TrimStart(' ');
+  }
+
+  public static int? ToInt(this string input) {
+    return Int32.TryParse(input, out int number) ? number : null;
   }
 }

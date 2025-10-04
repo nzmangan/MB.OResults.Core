@@ -55,7 +55,8 @@ public class AnalyzerService(ILogger<AnalyzerService> _Logger, IOptions<Analyzer
         var person = new Runner { };
 
         if (p.Person?.Name is not null) {
-          person.Name = (p.Person.Name.Given + " " + p.Person.Name.Family).Trim();
+          person.FirstName = p.Person.Name.Given?.Trim();
+          person.LastName = p.Person.Name.Family?.Trim();
 
           var id = p.Person.Id?.FirstOrDefault()?.Value;
 
@@ -72,7 +73,7 @@ public class AnalyzerService(ILogger<AnalyzerService> _Logger, IOptions<Analyzer
 
         var cr = p.Result[0];
         var status = cr.Status.ToString();
-        person.Position = cr.Position;
+        person.Position = cr.Position.ToInt();
         person.TimeInSeconds = cr.TimeSpecified ? cr.Time : (double?)null;
 
         if (cr.StartTimeSpecified) {
@@ -122,7 +123,7 @@ public class AnalyzerService(ILogger<AnalyzerService> _Logger, IOptions<Analyzer
             previousTime = control.Time;
 
             if (split.HasValue && split < 0.01) {
-              _Logger.LogInformation($"{person.Name} {person.Club} has a negative split time on leg between {previousCode} and {control.ControlCode}.");
+              _Logger.LogInformation($"{person.FirstName} {person.LastName} {person.Club} has a negative split time on leg between {previousCode} and {control.ControlCode}.");
               split = null;
               previousTime = null;
             }
@@ -137,7 +138,8 @@ public class AnalyzerService(ILogger<AnalyzerService> _Logger, IOptions<Analyzer
                 PreviousCode = splitTime.PreviousCode,
                 TimeInSeconds = splitTime.Leg,
                 Total = valid ? splitTime.Total : null,
-                Name = person.Name
+                FirstName = person.FirstName,
+                LastName = person.LastName
               });
 
               string performanceTrackingKey = GetGenericKey(splitTime.PreviousCode, splitTime.Code, splitTime.NextCode);
@@ -300,7 +302,8 @@ public class AnalyzerService(ILogger<AnalyzerService> _Logger, IOptions<Analyzer
 
           controlPassingLookup[key].Add(new PassingTime {
             Time = split.ActualTime,
-            Name = runner.Name,
+            FirstName = runner.FirstName,
+            LastName = runner.LastName,
             Club = runner.Club
           });
         }
@@ -323,8 +326,8 @@ public class AnalyzerService(ILogger<AnalyzerService> _Logger, IOptions<Analyzer
       foreach (var split in runner.Splits) {
         var key = GetGenericKey(split.PreviousCode, split.Code, split.NextCode);
         if (controlPassingLookup.TryGetValue(key, out List<PassingTime> value) && split.ActualTime.HasValue) {
-          split.Pack = [.. value.Select(p => new RunnerDetails { Name = p.Name, Club = p.Club, Delta = (p.Time.Value - split.ActualTime.Value).TotalSeconds })
-           .Where(p => Math.Abs(p.Delta) <= _AnalyzerServiceConfiguration.Value.Pack && $"{p.Name} {p.Club}" != $"{runner.Name} {runner.Club}")
+          split.Pack = [.. value.Select(p => new RunnerDetails { FirstName = p.FirstName, LastName = p.LastName, Club = p.Club, Delta = (p.Time.Value - split.ActualTime.Value).TotalSeconds })
+           .Where(p => Math.Abs(p.Delta) <= _AnalyzerServiceConfiguration.Value.Pack && $"{p.FirstName} {p.LastName} {p.Club}" != $"{runner.FirstName} {runner.LastName} {runner.Club}")
            .OrderBy(p => p.Delta)];
         }
       }
@@ -363,7 +366,8 @@ public class AnalyzerService(ILogger<AnalyzerService> _Logger, IOptions<Analyzer
         var person = new Runner { };
 
         if (p.Person != null && p.Person.Name != null) {
-          person.Name = (p.Person.Name.Given + " " + p.Person.Name.Family).Trim();
+          person.FirstName = p.Person.Name.Given?.Trim();
+          person.LastName = p.Person.Name.Family?.Trim();
 
           var id = p.Person.Id?.FirstOrDefault()?.Value;
 
@@ -411,7 +415,8 @@ public class AnalyzerService(ILogger<AnalyzerService> _Logger, IOptions<Analyzer
         var person = new Runner { };
 
         if (p.Person != null && p.Person.Name != null) {
-          person.Name = (p.Person.Name.Given + " " + p.Person.Name.Family).Trim();
+          person.FirstName = p.Person.Name.Given?.Trim();
+          person.LastName = p.Person.Name.Family?.Trim();
 
           var id = p.Person.Id?.FirstOrDefault()?.Value;
 
@@ -462,7 +467,8 @@ public class AnalyzerService(ILogger<AnalyzerService> _Logger, IOptions<Analyzer
             Grade = grade.Name,
             KmRate = leg.KmRate,
             LegTime = leg.Leg,
-            Name = runner.Name,
+            FirstName = runner.FirstName,
+            LastName = runner.LastName,
             NextControl = leg.NextCode,
             PerformanceIndex = leg.PerformanceIndex,
             PerformanceIndexAdjusted = leg.PerformanceIndexAdjusted,

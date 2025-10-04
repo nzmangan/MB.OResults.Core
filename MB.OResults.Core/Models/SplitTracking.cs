@@ -6,5 +6,6 @@ public class SplitTracking {
   public string Code { get; set; }
   public string PreviousCode { get; set; }
   public double? Total { get; set; }
-  public string Name { get; set; }
+  public string FirstName { get; set; }
+  public string LastName { get; set; }
 }
